@@ -3,8 +3,6 @@ package logic.chess;
 import logic.game.GameLogic;
 import logic.game.TeamColor;
 
-import java.util.ArrayList;
-
 public class LargeChess extends BaseChess implements Placeable{
     //Constructor
     public LargeChess(TeamColor teamColor) {
