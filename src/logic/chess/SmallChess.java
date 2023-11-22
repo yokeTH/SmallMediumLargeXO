@@ -3,7 +3,7 @@ package logic.chess;
 import logic.game.GameLogic;
 import logic.game.TeamColor;
 
-public class SmallChess extends BaseChess implements Placeable {
+public class SmallChess extends BaseChess{
     //Constructor
     public SmallChess(TeamColor teamColor) {
         super(teamColor, 1);
@@ -12,14 +12,12 @@ public class SmallChess extends BaseChess implements Placeable {
 
     @Override
     public boolean canPlace(int column, int row) {
-
         if (column >=3 || row>=3) {
             return false; //out of index
         }
-
         BaseChess[][] boardList = GameLogic.getInstance().getBoard().getBoardList();
-        BaseChess baseChess = boardList[row][column];
-        if (baseChess == null) {
+        BaseChess chessInPos = boardList[row][column];
+        if (chessInPos == null) {
             return true; //empty place
         }
         return false;
@@ -27,11 +25,14 @@ public class SmallChess extends BaseChess implements Placeable {
 
     @Override
     public void Place(int column, int row) {
-        if (!this.canPlace(column,row)){
-            System.out.println("Can't place here"); //must be an exception
+        if (!canPlace(column,row)){
             return;
         }
         BaseChess[][] boardList = GameLogic.getInstance().getBoard().getBoardList();
         boardList[row][column] = this;
+    }
+    @Override
+    public String toString() {
+        return "SmallChess";
     }
 }

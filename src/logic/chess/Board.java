@@ -1,25 +1,16 @@
 package logic.chess;
 
+import logic.game.TeamColor;
+
 public class Board {
     //Field
     private BaseChess[][] boardList;
     //Constructor
     public Board(){
-        this.boardList = new BaseChess[3][3];
-    }
-    //Method
-    public boolean isBoardFull(){
-        //check if the board is full to GameOver
-        for (int i=0;i<3;i++){
-            for (int j=0;j<3;j++){
-                if (boardList[i][j] == null){
-                    return false;
-                }
-            }
-        }
-        return true;
+        setBoardList(new BaseChess[3][3]);
     }
 
+    //Method
     public boolean checkThreeCells (int row1,int column1, int row2,int column2, int row3,int column3){
         if (boardList[row1][column1] == null) return false;
         if (boardList[row2][column2] == null) return false;
@@ -51,20 +42,40 @@ public class Board {
     }
 
     public boolean checkForWinner(){
-        // Check rows, columns, and diagonals for a winner
         return checkRows() || checkColumns() || checkDiagonals();
     }
 
-    private void resetGame() {
-        //for reset the game, if don't use just delete this
-        for (int row = 0; row < 3; row++) {
-            for (int column = 0; column < 3; column++) {
-                boardList[row][column]=null;
+    public void printBoard() {
+        //condition is player1 is white and player2 is black
+        System.out.println("------------------------------");
+        for (int i = 0; i < 3; i++) {
+            System.out.print("| ");
+            for (int j = 0; j < 3; j++) {
+                String p = "";
+                BaseChess b = boardList[i][j];
+                if (b==null){
+                    p = "      ";
+                } else if (b.getClass() == LargeChess.class){
+                    if (b.getTeamColor() == TeamColor.WHITE){
+                        p = " 1(L) ";
+                    } else { p = " 2(L) "; }
+                } else if (b.getClass() == MediumChess.class){
+                    if (b.getTeamColor() == TeamColor.WHITE){
+                        p = " 1(M) ";
+                    } else { p = " 2(M) "; }
+                } else if (b.getClass() == SmallChess.class) {
+                    if (b.getTeamColor() == TeamColor.WHITE) {
+                        p = " 1(S) ";
+                    } else { p = " 2(S) "; }
+                }
+                System.out.print( p + " | ");
             }
+            System.out.println("\n------------------------------");
         }
     }
+
     //Getter and Setter
-    public void setBoard(BaseChess[][] boardList){
+    public void setBoardList(BaseChess[][] boardList){
         this.boardList=boardList;
     }
     public BaseChess[][] getBoardList(){

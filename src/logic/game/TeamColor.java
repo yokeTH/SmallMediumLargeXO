@@ -2,9 +2,7 @@ package logic.game;
 
 public enum TeamColor {
     WHITE,
-    BLACK,
-    RED,
-    BLUE;
+    BLACK;
 
     @Override
     public String toString() {

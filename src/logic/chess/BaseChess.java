@@ -2,7 +2,7 @@ package logic.chess;
 
 import logic.game.TeamColor;
 
-public abstract class BaseChess {
+public abstract class BaseChess implements Placeable{
     //Field
     private TeamColor teamColor;
     private int size ;
@@ -12,6 +12,8 @@ public abstract class BaseChess {
         setSize(size);
         setTeamColor(teamColor);
     }
+    //abstract method
+    public abstract String toString();
 
     //Getter & Setter
     public void setSize(int size){

@@ -3,36 +3,36 @@ package logic.chess;
 import logic.game.GameLogic;
 import logic.game.TeamColor;
 
-public class MediumChess extends BaseChess implements Placeable{
+public class MediumChess extends BaseChess{
     //Constructor
     public MediumChess(TeamColor teamColor) {
         super(teamColor, 2);
     }
     @Override
     public boolean canPlace(int column,int row) {
-
         if (column >=3 || row>=3) {
             return false; //out of index
         }
-
         BaseChess[][] boardList = GameLogic.getInstance().getBoard().getBoardList();
-        BaseChess baseChess = boardList[row][column];
-        if (baseChess == null) {
+        BaseChess chessInPos = boardList[row][column];
+        if (chessInPos == null) {
             return true; //empty place
-        } else if (baseChess.getSize()==1 && baseChess.getTeamColor()!=this.getTeamColor()) {
+        } else if (chessInPos.getSize()==1 && chessInPos.getTeamColor()!=this.getTeamColor()) {
             return true; // if size = 1 and different teamColor
         }
-
         return false;
     }
 
     @Override
     public void Place(int column,int row) {
-        if (!this.canPlace(column,row)){
-            System.out.println("Can't place here"); //must be an exception
+        if (!canPlace(column,row)){
             return;
         }
         BaseChess[][] boardList = GameLogic.getInstance().getBoard().getBoardList();
         boardList[row][column] = this;
+    }
+    @Override
+    public String toString() {
+        return "MediumChess";
     }
 }

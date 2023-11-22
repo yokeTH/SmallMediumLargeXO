@@ -1,24 +1,19 @@
 package logic.game;
 
 import logic.chess.*;
-
-import java.util.ArrayList;
+import logic.entity.Player;
 
 public class GameLogic {
     private Board board;
-    private int currentPlayer;
-    private final ArrayList<ArrayList<BaseChess>> playerHands;
-
+    private Player winner;
+    private Player player1;
+    private Player player2;
+    private Player currentPlayer;
     private static GameLogic instance = null;
 
     public GameLogic(){
-        this.board = new Board();
-        this.playerHands = new ArrayList<>();
-        for (int i=0;i<2;i++){
-            ArrayList<BaseChess> hand = new ArrayList<>();
-            playerHands.add(hand);
-        }
-        this.currentPlayer=0;
+        setBoard(new Board());
+        setWinner(null);
     }
 
     public static GameLogic getInstance() {
@@ -32,37 +27,46 @@ public class GameLogic {
         instance = null;
     }
 
+    public void goToNextPlayer(){
+        if (getCurrentPlayer()==player1){
+            setCurrentPlayer(player2);
+        } else {
+            setCurrentPlayer(player1);
+        }
+    }
     public void initGame(){
-        //real game player1 and player 2 can choose TeamColor
-
-        //case player1 is teamColor WHITE
-        playerHands.get(0).add(new SmallChess(TeamColor.WHITE));
-        playerHands.get(0).add(new SmallChess(TeamColor.WHITE));
-        playerHands.get(0).add(new MediumChess(TeamColor.WHITE));
-        playerHands.get(0).add(new MediumChess(TeamColor.WHITE));
-        playerHands.get(0).add(new LargeChess(TeamColor.WHITE));
-        playerHands.get(0).add(new LargeChess(TeamColor.WHITE));
-        //case player2 is teamColor BLACK
-        playerHands.get(1).add(new SmallChess(TeamColor.BLACK));
-        playerHands.get(1).add(new SmallChess(TeamColor.BLACK));
-        playerHands.get(1).add(new MediumChess(TeamColor.BLACK));
-        playerHands.get(1).add(new MediumChess(TeamColor.BLACK));
-        playerHands.get(1).add(new LargeChess(TeamColor.BLACK));
-        playerHands.get(1).add(new LargeChess(TeamColor.BLACK));
+        setCurrentPlayer(player1);
     }
 
-    //Getter and Setter
+    public boolean isGameOver(){
+        if (getBoard().checkForWinner()){
+            setWinner(getCurrentPlayer());
+            return true;
+        }
+        return (player1.haveNoChess() && player2.haveNoChess()) ||
+                (player1.noPlaceableChess() && player2.noPlaceableChess());
+    }
+
     public void setBoard(Board board){
         this.board = board;
     }
     public Board getBoard(){
         return board;
     }
-
-    public int getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return currentPlayer;
     }
-    public void setCurrentPlayer(int currentPlayer) {
+    public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
+    public void setWinner(Player winner) {
+        this.winner = winner;
+    }
+    public Player getWinner() {return winner;}
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+    public Player getPlayer1() {return player1;}
+    public void setPlayer2(Player player2) {this.player2 = player2;}
+    public Player getPlayer2() {return player2;}
 }
