@@ -1,5 +1,5 @@
 import logic.chess.BaseChess;
-import logic.chess.Board;
+import logic.entity.Board;
 import logic.entity.Player;
 import logic.game.GameLogic;
 import logic.game.TeamColor;

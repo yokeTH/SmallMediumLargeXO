@@ -1,6 +1,6 @@
 package logic.game;
 
-import logic.chess.*;
+import logic.entity.Board;
 import logic.entity.Player;
 
 public class GameLogic {

@@ -1,5 +1,9 @@
-package logic.chess;
+package logic.entity;
 
+import logic.chess.BaseChess;
+import logic.chess.LargeChess;
+import logic.chess.MediumChess;
+import logic.chess.SmallChess;
 import logic.game.TeamColor;
 
 public class Board {
