@@ -1,5 +1,8 @@
 package network.server;
 
+import logic.entity.Player;
+import logic.game.TeamColor;
+import network.message.Action;
 import network.message.Connect;
 import network.message.MessageObject;
 import network.message.RoomInfo;
@@ -42,24 +45,58 @@ public class Server {
             MessageObject msg;
             while ((msg = (MessageObject) in.readObject()) != null) {
                 if (msg instanceof Connect) {
+
                     System.out.println(((Connect) msg).getRoomId());
+
                     if(((Connect) msg).getRoomId() == 0){
+
+                        // Create New Room and set Player 1
                         room = new Room();
-                        System.out.println(room.toString());
+                        room.setPlayer1(new Player(((Connect) msg).getTeamColor(), ((Connect) msg).getName()));
+                        room.getGameInstance().setPlayer1(room.getPlayer1());
+
+                        // Put to rooms
                         this.rooms.put(room.getRoomId(), room);
+
+                        // Broadcast to client
                         this.sendMessageToClient(out, new RoomInfo(room));
-                        System.out.println(clientSocket.getRemoteSocketAddress() + " Create Room: " + room);
+
+                        System.out.println(((Connect) msg).getName()+ " " + clientSocket.getRemoteSocketAddress() + " Create Room: " + room);
                     }else{
+
+                        // Join Room and set Player 2
                         room = this.rooms.get(((Connect) msg).getRoomId());
+                        room.setPlayer2(new Player(((Connect) msg).getTeamColor(), ((Connect) msg).getName()));
+                        room.getGameInstance().setPlayer2(room.getPlayer2());
+
+                        // Random player
+                        if (Math.random() >= 0.5) {
+                            room.getGameInstance().setCurrentPlayer(room.getPlayer1());
+                        }else{
+                            room.getGameInstance().setCurrentPlayer(room.getPlayer2());
+                        }
+
+                        // Broadcast to client
                         this.sendMessageToClient(out, new RoomInfo(room));
-                        System.out.println(clientSocket.getRemoteSocketAddress() + "Join Room: " + room.toString());
+
+                        System.out.println( ((Connect) msg).getName()+ " " + clientSocket.getRemoteSocketAddress() + " Join Room: " + room);
+
+                        room.getGameInstance().initGame();
                     }
+
                     System.out.println(rooms.toString());
+                }else if(msg instanceof Action){
+                    room = rooms.get(((Action) msg).getRoom().getRoomId());
+                    room = ((Action) msg).getRoom();
                 }
+
+
             }
         } catch (EOFException e) {
+
             System.out.println("Client Disconnect: " + clientSocket.getRemoteSocketAddress());
             if(room != null) this.rooms.remove(room);
+
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         } finally {

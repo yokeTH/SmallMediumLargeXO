@@ -11,7 +11,7 @@ public class ClientJoinRoomTest {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         Scanner sc = new Scanner(System.in);
         Client client = new Client();
-        client.connect("0.0.0.0", 2222);
+        client.connect("0.0.0.0", 65301);
 
         System.out.print("Room No. :");
         int roomId = sc.nextInt();
