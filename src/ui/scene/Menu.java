@@ -2,34 +2,45 @@ package ui.scene;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
-import test.ui.SceneSwitch;
 import ui.Main;
 import ui.components.TextButton;
 
 public class Menu extends GridPane {
 
     public Menu() {
-        TextButton singlePlayerButton = new TextButton("Singleplayer");
 
-        singlePlayerButton.setOnMouseClicked(mouse->{
-            Main.stage.setScene(Main.c2);
+        TextButton playOfflineButton = new TextButton("PLAY OFFLINE");
+        playOfflineButton.setOnMouseClicked(event->{
+//            Main.stage.setScene(Main.createRoom);
         });
 
 
-        TextButton multiPlayerButton = new TextButton("Multiplayer");
-        TextButton settingButton = new TextButton("Select Color");
-        TextButton closeButton = new TextButton("Close");
+        TextButton createRoomButton = new TextButton("CREATE ROOM");
+        createRoomButton.setOnMouseClicked(event->{
+            Main.stage.setScene(CreateRoom.getSceneInstance());
+        });
 
-        closeButton.setOnMouseClicked(mouse->{
+        TextButton joinRoomButton = new TextButton("JOIN ROOM");
+        joinRoomButton.setOnMouseClicked(event -> {
+            Main.stage.setScene(JoinRoom.getSceneInstance());
+        });
+
+        TextButton helpButton = new TextButton("HELP");
+        TextButton credits = new TextButton("CREDITS");
+
+        TextButton quitButton = new TextButton("QUIT");
+        quitButton.setOnMouseClicked(mouse->{
             Main.stage.close();
         });
 
 
         this.setVgap(10);
         this.setAlignment(Pos.CENTER);
-        this.add(singlePlayerButton,0,0);
-        this.add(multiPlayerButton,0,1);
-        this.add(settingButton,0,2);
-        this.add(closeButton,0,3);
+        this.add(playOfflineButton,0,1);
+        this.add(createRoomButton,0,2);
+        this.add(joinRoomButton,0,3);
+        this.add(helpButton,0,4);
+        this.add(credits,0,5);
+        this.add(quitButton,0,6);
     }
 }

@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.transform.Scale;
 
-abstract public class SVGViewBase extends Group {
+abstract public class SVGViewBase extends Pane {
 
     protected SVGPath[] svgPath;
     protected String[] content;
@@ -19,9 +19,13 @@ abstract public class SVGViewBase extends Group {
     protected double w,h;
 
     protected abstract void init();
+    protected Group group = new Group();
 
     private void setScale(){
-        this.getTransforms().add(new Scale(scaleX, scaleY));
+        this.group.getTransforms().add(new Scale(scaleX, scaleY));
+        this.setMaxWidth(w);
+        this.setMaxHeight(h);
+        this.getChildren().addAll(this.group);
     }
 
     public SVGViewBase(double w, double h){

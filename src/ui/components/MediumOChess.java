@@ -45,7 +45,7 @@ public class MediumOChess extends SVGViewBase implements SetPrimaryColorAble, Se
             svgPath[i].setOpacity(opacity[i]);
         }
 
-        this.getChildren().addAll(this.svgPath);
+        this.group.getChildren().addAll(this.svgPath);
     }
 
     public MediumOChess(double w, double h){

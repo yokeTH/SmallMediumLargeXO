@@ -54,7 +54,7 @@ public class LargeOChess extends SVGViewBase implements SetPrimaryColorAble, Set
             svgPath[i].setOpacity(opacity[i]);
         }
 
-        this.getChildren().addAll(this.svgPath);
+        this.group.getChildren().addAll(this.svgPath);
     }
 
     public LargeOChess(double w, double h){

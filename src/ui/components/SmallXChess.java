@@ -36,7 +36,7 @@ public class SmallXChess extends SVGViewBase {
             svgPath[i].setOpacity(opacity[i]);
         }
 
-        this.getChildren().addAll(this.svgPath);
+        this.group.getChildren().addAll(this.svgPath);
     }
 
     public SmallXChess(double w, double h){

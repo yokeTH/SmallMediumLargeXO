@@ -8,11 +8,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class TextButton extends Button {
-    public TextButton(String text){
-        super(text);
+    private void setStyle(Double width){
         this.setCursor(Cursor.HAND);
-        this.setMinWidth(256);
-        this.setMaxWidth(256);
+        this.setMinWidth(width);
+        this.setMaxWidth(width);
         this.setStyle(
                 "-fx-background-color: #3498db; " +
                         "-fx-background-radius: 5px; " +
@@ -50,5 +49,14 @@ public class TextButton extends Button {
                             "-fx-font-family: 'Itim';"
             );
         });
+    }
+    public TextButton(String text){
+        super(text);
+        setStyle(256.0);
+    }
+
+    public TextButton(String text, double width){
+        super(text);
+        setStyle(width);
     }
 }
