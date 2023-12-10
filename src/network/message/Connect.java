@@ -5,14 +5,10 @@ import logic.game.TeamColor;
 
 public class Connect extends MessageObject{
 
-    private int roomId;
-    private TeamColor teamColor;
     private String name;
 
-    public Connect(int roomId, TeamColor teamColor, String name) {
+    public Connect(TeamColor teamColor, String name) {
         super(MessageType.CONNECT);
-        this.roomId = roomId;
-        this.teamColor = teamColor;
         this.name = name;
     }
 
@@ -28,29 +24,9 @@ public class Connect extends MessageObject{
         super(MessageType.CONNECT);
     }
 
-    public Connect(int roomId){
+    public Connect(String name){
         super(MessageType.CONNECT);
-        this.roomId = roomId;
+        this.name = name;
     }
 
-    public Connect(TeamColor teamColor){
-        super(MessageType.CONNECT);
-        this.teamColor = teamColor;
-    }
-
-    public int getRoomId(){
-        return roomId;
-    }
-
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
-    }
-
-    public TeamColor getTeamColor() {
-        return teamColor;
-    }
-
-    public void setTeamColor(TeamColor teamColor) {
-        this.teamColor = teamColor;
-    }
 }
