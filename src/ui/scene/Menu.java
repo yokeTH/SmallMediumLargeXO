@@ -11,7 +11,7 @@ public class Menu extends GridPane {
 
         TextButton playOfflineButton = new TextButton("PLAY OFFLINE");
         playOfflineButton.setOnMouseClicked(event->{
-//            Main.stage.setScene(Main.createRoom);
+            Main.stage.setScene(GamePlay.getSceneInstance());
         });
 
 
