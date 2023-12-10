@@ -14,6 +14,8 @@ import ui.Main;
 import ui.components.LargeOChess;
 import ui.components.LargeXChess;
 
+import java.net.UnknownHostException;
+
 public class CreateRoom extends GridPane {
 
     private static Scene sceneInstance;
@@ -36,13 +38,21 @@ public class CreateRoom extends GridPane {
 
         LargeXChess x = new LargeXChess(72);
         x.setOnMouseClicked(event -> {
-            Main.stage.setScene(CreatorWaitingRoom.getSceneInstance(RoomRole.CREATOR, roomNameField.getText(), TeamColor.BLACK));
+            try {
+                Main.stage.setScene(CreatorWaitingRoom.getSceneInstance(RoomRole.CREATOR, playerNameField.getText(), TeamColor.BLACK));
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e);
+            }
         });
 //        Pane xBg = new Pane(x);
 //        xBg.setBackground(Background.fill(Color.WHITE));
         LargeOChess o = new LargeOChess(72);
         o.setOnMouseClicked(event -> {
-            Main.stage.setScene(CreatorWaitingRoom.getSceneInstance(RoomRole.CREATOR, roomNameField.getText(), TeamColor.WHITE));
+            try {
+                Main.stage.setScene(CreatorWaitingRoom.getSceneInstance(RoomRole.CREATOR, playerNameField.getText(), TeamColor.WHITE));
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         HBox xo = new HBox(x, o);

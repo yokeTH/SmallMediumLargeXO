@@ -11,6 +11,8 @@ import javafx.scene.text.TextAlignment;
 import ui.Main;
 import ui.components.TextButton;
 
+import java.io.IOException;
+
 public class JoinRoom extends GridPane {
     private static Scene sceneInstance;
     public JoinRoom(){
@@ -18,7 +20,7 @@ public class JoinRoom extends GridPane {
         title.setFont(Font.font("Itim",48));
         title.setTextAlignment(TextAlignment.CENTER);
 
-        Label roomCodeLabel = new Label("Room Code");
+        Label roomCodeLabel = new Label("Address");
         roomCodeLabel.setFont(Font.font("Itim",24));
         Label playerNameLabel = new Label("Player Name");
         playerNameLabel.setFont(Font.font("Itim",24));
@@ -28,7 +30,11 @@ public class JoinRoom extends GridPane {
 
         TextButton joinButton = new TextButton("JOIN", 360);
         joinButton.setOnMouseClicked(event -> {
-            Main.stage.setScene(JoinerWaitingRoom.getSceneInstance(roomCodeField.getText()));
+            try {
+                Main.stage.setScene(JoinerWaitingRoom.getSceneInstance(roomCodeField.getText(),playerNameField.getText()));
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         this.setVgap(10);
