@@ -17,10 +17,7 @@ public class MediumChess extends BaseChess{
         BaseChess chessInPos = boardList[row][column];
         if (chessInPos == null) {
             return true; //empty place
-        } else if (chessInPos.getSize()==1 && chessInPos.getTeamColor()!=this.getTeamColor()) {
-            return true; // if size = 1 and different teamColor
-        }
-        return false;
+        } else return chessInPos.getSize() == 1 && chessInPos.getTeamColor() != this.getTeamColor(); // if size = 1 and different teamColor
     }
 
     @Override

@@ -17,10 +17,7 @@ public class SmallChess extends BaseChess{
         }
         BaseChess[][] boardList = GameLogic.getInstance().getBoard().getBoardList();
         BaseChess chessInPos = boardList[row][column];
-        if (chessInPos == null) {
-            return true; //empty place
-        }
-        return false;
+        return chessInPos == null; //empty place
     }
 
     @Override
