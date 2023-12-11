@@ -13,11 +13,11 @@ public class TextButton extends Button {
         this.setMinWidth(width);
         this.setMaxWidth(width);
         this.setStyle(
-                "-fx-background-color: #3498db; " +
+                "-fx-background-color: #9DADFA; " +
                         "-fx-background-radius: 5px; " +
                         "-fx-padding: 10px 20px; " +
                         "-fx-font-size: 18px; " +
-                        "-fx-text-fill: #ffffff;" +
+                        "-fx-text-fill: #000000;" +
                         "-fx-font-family: 'Itim';"
         );
 
@@ -30,7 +30,7 @@ public class TextButton extends Button {
 
         this.setOnMouseEntered(e -> {
             this.setStyle(
-                    "-fx-background-color: #2980b9; " +
+                    "-fx-background-color: #647EF8; " +
                             "-fx-background-radius: 5px; " +
                             "-fx-padding: 10px 20px; " +
                             "-fx-font-size: 18px; " +
@@ -41,11 +41,11 @@ public class TextButton extends Button {
 
         this.setOnMouseExited(e -> {
             this.setStyle(
-                    "-fx-background-color: #3498db; " +
+                    "-fx-background-color: #9DADFA; " +
                             "-fx-background-radius: 5px; " +
                             "-fx-padding: 10px 20px; " +
                             "-fx-font-size: 18px; " +
-                            "-fx-text-fill: #ffffff;" +
+                            "-fx-text-fill: #000000;" +
                             "-fx-font-family: 'Itim';"
             );
         });

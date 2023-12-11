@@ -276,13 +276,35 @@ public class GamePlay extends HBox {
     private SVGViewBase toBoardCell(int i, int j){
         SVGViewBase n = BaseChessToUI.translate(GameLogic.getInstance().getBoard().getBoardList()[i][j]);
         PopTransitionController controller = new PopTransitionController(n);
-        n.setStyle(
-                "-fx-background-color: #7EB1DB;" +
-                "-fx-background-radius: 12;"
-        );
+
+        if(GameLogic.getInstance().isGameOver()){
+            if(GameLogic.getInstance().getWinner() != null){
+                if(GameLogic.getInstance().getWinPattern()[i][j]){
+                    n.setStyle(
+                            "-fx-background-color: #A9F488;" +
+                            "-fx-background-radius: 12;"
+                    );
+                }else {
+                    n.setStyle(
+                    "-fx-background-color: #9DADFA;" +
+                            "-fx-background-radius: 12;"
+                    );
+                }
+
+            }else {
+                n.setStyle(
+                        "-fx-background-color: #FFEF97;" +
+                                "-fx-background-radius: 12;"
+                );
+            }
+        }else {
+            n.setStyle(
+                    "-fx-background-color: #9DADFA;" +
+                            "-fx-background-radius: 12;"
+            );
+        }
         n.setOnMouseClicked(event -> {
             controller.playAnimation();
-            controller.playSound();
             if(this.chessIdx != -1){
                 if(mode == GameMode.OFFLINE){
                     GameLogic.getInstance().getCurrentPlayer().play(chessIdx, j, i);
