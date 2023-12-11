@@ -69,6 +69,9 @@ public class LargeOChess extends SVGViewBase implements SetPrimaryColorAble, Set
         super();
     }
 
+    public LargeOChess(double v, double v1, double v2){
+        super(v,v1,v2);
+    }
     @Override
     public void setPrimaryColor(String color){
         svgPath[2].setFill(Color.web(color));

@@ -15,12 +15,9 @@ public class Main extends Application {
     public void start(Stage stage) {
         Main.stage = stage;
 
-        Menu root = new Menu();
-        Scene scene = new Scene(root, 854,480);
-
         stage.setResizable(false);
         stage.setTitle("XO Game");
-        stage.setScene(scene);
+        stage.setScene(Menu.getSceneInstance());
         stage.show();
     }
 
