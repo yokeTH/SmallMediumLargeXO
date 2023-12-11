@@ -10,7 +10,7 @@ public class Main extends Application {
     public static AudioClip audioClip;
     @Override
     public void start(Stage stage) {
-        audioClip = new AudioClip(ClassLoader.getSystemResource("assets/audio/BackgroundMusic.m4a").toString());
+        audioClip = new AudioClip(ClassLoader.getSystemResource("assets/audio/BackgroundMusic.wav").toString());
         audioClip.play();
         Main.stage = stage;
 

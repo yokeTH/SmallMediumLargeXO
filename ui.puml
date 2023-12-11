@@ -1,0 +1,195 @@
+@startuml
+class ui.scene.GamePlay {
+- {static} GamePlay instance
+- {static} Scene sceneInstance
+- int chessIdx
+- VBox leftPane
+- GameMode mode
+- TeamColor teamColor
+- RoomRole role
++ <<Create>> GamePlay()
++ <<Create>> GamePlay(RoomRole,Player,Player)
+- void resetGame()
+- void resetGame(Player,Player)
++ void updateLayout()
+- void updateGame()
++ void updateClientGameInstance(RoomInfo)
+- SVGViewBase toBoardCell(int,int)
+- SVGViewBase toInventoryCell(int)
++ {static} Scene getSceneInstance()
++ {static} Scene getSceneInstance(RoomRole,Player,Player)
++ {static} GamePlay getInstance()
++ {static} GamePlay getInstance(RoomRole,Player,Player)
+}
+class ui.components.Logo {
++ <<Create>> Logo()
++ <<Create>> Logo(double)
+- void setupLayout()
+}
+class ui.scene.JoinRoom {
+- {static} Scene sceneInstance
++ <<Create>> JoinRoom()
++ {static} Scene getSceneInstance()
+}
+class ui.components.MediumXChess {
++ <<Create>> MediumXChess(double,double)
++ <<Create>> MediumXChess(double,double,double)
++ <<Create>> MediumXChess(double)
++ <<Create>> MediumXChess()
+# void init()
++ void setPrimaryColor(String)
++ void setSecondColor(String)
+}
+class ui.scene.Offline {
+}
+class ui.scene.JoinerWaitingRoom {
+- {static} Scene sceneInstance
++ {static} Client client
+~ <<Create>> JoinerWaitingRoom(String,String)
++ {static} Scene getSceneInstance(String,String)
+}
+class ui.scene.CreatorWaitingRoom {
+- {static} Scene sceneInstance
++ {static} Server server
+~ <<Create>> CreatorWaitingRoom(String,TeamColor)
++ {static} Scene getSceneInstance(RoomRole,String,TeamColor)
+}
+interface ui.components.SetSecondColorAble {
+~ void setSecondColor(String)
+}
+interface ui.components.SetPrimaryColorAble {
+~ void setPrimaryColor(String)
+}
+class ui.Main {
++ {static} Stage stage
++ {static} AudioClip audioClip
++ void start(Stage)
++ {static} void main(String[])
+}
+class ui.components.LargeXChess {
++ <<Create>> LargeXChess(double,double,double)
++ <<Create>> LargeXChess(double,double)
++ <<Create>> LargeXChess(double)
++ <<Create>> LargeXChess()
+# void init()
++ void setPrimaryColor(String)
++ void setSecondColor(String)
+}
+class ui.scene.Menu {
+- {static} Scene sceneInstance
++ <<Create>> Menu()
++ {static} Scene getSceneInstance()
+}
+class ui.components.EmptyChess {
++ <<Create>> EmptyChess()
+# void init()
+}
+class ui.transition.PopTransitionController {
+- ScaleTransition scaleTransition
+- AudioClip clickSound
++ <<Create>> PopTransitionController(SVGViewBase)
++ void playAnimation()
++ void playSound()
+}
+class ui.components.TextButton {
++ <<Create>> TextButton(String)
++ <<Create>> TextButton(String,double)
+- void setStyle(Double)
+}
+enum ui.scene.RoomRole {
++  CREATOR
++  JOINER
+}
+class ui.scene.CreateRoom {
+- {static} Scene sceneInstance
++ <<Create>> CreateRoom()
++ {static} Scene getSceneInstance()
+}
+class ui.components.SmallOChess {
++ <<Create>> SmallOChess(double,double)
++ <<Create>> SmallOChess(double)
++ <<Create>> SmallOChess()
++ <<Create>> SmallOChess(double,double,double)
+# void init()
+}
+class ui.scene.SelectColor {
++ <<Create>> SelectColor()
+}
+class ui.utils.BaseChessToUI {
++ {static} SVGViewBase translate(BaseChess)
+}
+abstract class ui.components.SVGViewBase {
+# SVGPath[] svgPath
+# String[] content
+# String[] color
+# Double[] opacity
+# double scaleX
+# double scaleY
+# double w
+# double componentW
+# Group group
++ <<Create>> SVGViewBase(double,double)
++ <<Create>> SVGViewBase(double,double,double)
++ <<Create>> SVGViewBase(double)
++ <<Create>> SVGViewBase()
+# {abstract}void init()
+- void setScale()
+}
+enum ui.GameMode {
++  ONLINE
++  OFFLINE
+}
+class ui.components.LargeOChess {
++ <<Create>> LargeOChess(double,double)
++ <<Create>> LargeOChess(double)
++ <<Create>> LargeOChess()
++ <<Create>> LargeOChess(double,double,double)
+# void init()
++ void setPrimaryColor(String)
++ void setSecondColor(String)
+}
+class ui.components.SmallXChess {
++ <<Create>> SmallXChess(double,double)
++ <<Create>> SmallXChess(double)
++ <<Create>> SmallXChess()
++ <<Create>> SmallXChess(double,double,double)
+# void init()
+}
+class ui.components.MediumOChess {
++ <<Create>> MediumOChess(double,double)
++ <<Create>> MediumOChess(double,double,double)
++ <<Create>> MediumOChess(double)
++ <<Create>> MediumOChess()
+# void init()
++ void setPrimaryColor(String)
++ void setSecondColor(String)
+}
+
+
+ui.scene.HBox <|-- ui.scene.GamePlay
+javafx.scene.layout.StackPane <|-- ui.components.Logo
+javafx.scene.layout.GridPane <|-- ui.scene.JoinRoom
+ui.components.SetPrimaryColorAble <|.. ui.components.MediumXChess
+ui.components.SetSecondColorAble <|.. ui.components.MediumXChess
+ui.components.SVGViewBase <|-- ui.components.MediumXChess
+javafx.scene.layout.GridPane <|-- ui.scene.JoinerWaitingRoom
+javafx.scene.layout.GridPane <|-- ui.scene.CreatorWaitingRoom
+javafx.application.Application <|-- ui.Main
+ui.components.SetPrimaryColorAble <|.. ui.components.LargeXChess
+ui.components.SetSecondColorAble <|.. ui.components.LargeXChess
+ui.components.SVGViewBase <|-- ui.components.LargeXChess
+javafx.scene.layout.VBox <|-- ui.scene.Menu
+ui.components.SVGViewBase <|-- ui.components.EmptyChess
+javafx.scene.control.Button <|-- ui.components.TextButton
+javafx.scene.layout.GridPane <|-- ui.scene.CreateRoom
+ui.components.SVGViewBase <|-- ui.components.SmallOChess
+javafx.scene.layout.GridPane <|-- ui.scene.SelectColor
+ui.components.Pane <|-- ui.components.SVGViewBase
+ui.components.SetPrimaryColorAble <|.. ui.components.LargeOChess
+ui.components.SetSecondColorAble <|.. ui.components.LargeOChess
+ui.components.SVGViewBase <|-- ui.components.LargeOChess
+ui.components.SVGViewBase <|-- ui.components.SmallXChess
+ui.components.SetPrimaryColorAble <|.. ui.components.MediumOChess
+ui.components.SetSecondColorAble <|.. ui.components.MediumOChess
+ui.components.SVGViewBase <|-- ui.components.MediumOChess
+@enduml

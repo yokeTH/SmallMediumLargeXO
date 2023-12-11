@@ -1,0 +1,102 @@
+@startuml
+interface logic.chess.Placeable {
+~ boolean canPlace(int,int)
+~ void Place(int,int)
+}
+class logic.entity.Player {
+~ TeamColor teamColor
+~ ArrayList<BaseChess> baseChessArrayList
+~ String name
+~ boolean playDone
++ <<Create>> Player(TeamColor,String)
++ boolean haveThisChess(int)
++ void play(int,int,int)
++ boolean haveNoChess()
++ boolean noPlaceableChess()
++ String getPlayerNum()
++ ArrayList<BaseChess> getBaseChessArrayList()
++ void setBaseChessArrayList(ArrayList<BaseChess>)
++ String getName()
++ void setName(String)
++ TeamColor getTeamColor()
++ void setTeamColor(TeamColor)
++ void setPlayDone(boolean)
++ boolean isPlayDone()
+}
+class logic.game.GameLogic {
+- Board board
+- Player winner
+- Player player1
+- Player player2
+- Player currentPlayer
+- {static} GameLogic instance
++ <<Create>> GameLogic()
++ {static} GameLogic getInstance()
++ {static} void clearInstance()
++ void goToNextPlayer()
++ void initGame()
++ boolean isGameOver()
++ void setBoard(Board)
++ Board getBoard()
++ Player getCurrentPlayer()
++ void setCurrentPlayer(Player)
++ void setWinner(Player)
++ Player getWinner()
++ void setPlayer1(Player)
++ Player getPlayer1()
++ void setPlayer2(Player)
++ Player getPlayer2()
++ boolean[][] getWinPattern()
+}
+class logic.chess.SmallChess {
++ <<Create>> SmallChess(TeamColor)
++ boolean canPlace(int,int)
++ void Place(int,int)
++ String toString()
+}
+class logic.entity.Board {
+- BaseChess[][] boardList
++ <<Create>> Board()
++ boolean checkThreeCells(int,int,int,int,int,int)
++ boolean checkRows()
++ boolean checkColumns()
++ boolean checkDiagonals()
++ boolean checkForWinner()
++ void printBoard()
++ void setBoardList(BaseChess[][])
++ BaseChess[][] getBoardList()
+}
+enum logic.game.TeamColor {
++  WHITE
++  BLACK
++ String toString()
+}
+class logic.chess.MediumChess {
++ <<Create>> MediumChess(TeamColor)
++ boolean canPlace(int,int)
++ void Place(int,int)
++ String toString()
+}
+class logic.chess.LargeChess {
++ <<Create>> LargeChess(TeamColor)
++ boolean canPlace(int,int)
++ void Place(int,int)
++ String toString()
+}
+abstract class logic.chess.BaseChess {
+- TeamColor teamColor
+- int size
++ <<Create>> BaseChess(TeamColor,int)
++ {abstract}String toString()
++ void setSize(int)
++ int getSize()
++ void setTeamColor(TeamColor)
++ TeamColor getTeamColor()
+}
+
+
+logic.chess.BaseChess <|-- logic.chess.SmallChess
+logic.chess.BaseChess <|-- logic.chess.MediumChess
+logic.chess.BaseChess <|-- logic.chess.LargeChess
+logic.chess.Placeable <|.. logic.chess.BaseChess
+@enduml

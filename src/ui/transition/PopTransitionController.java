@@ -20,7 +20,7 @@ public class PopTransitionController {
 
         scaleTransition.setFromY(1.2);
         scaleTransition.setToY(1);
-        clickSound = new AudioClip(ClassLoader.getSystemResource("assets/audio/ClickButton.mp3").toString());
+        clickSound = new AudioClip(ClassLoader.getSystemResource("assets/audio/ClickButton.wav").toString());
     }
 
     public void playAnimation(){

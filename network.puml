@@ -1,0 +1,103 @@
+@startuml
+class network.message.Connect {
+- String name
++ <<Create>> Connect(TeamColor,String)
++ <<Create>> Connect()
++ <<Create>> Connect(String)
++ String getName()
++ void setName(String)
+}
+class network.message.Play {
+- int chessIdx
++ <<Create>> Play(int,int,int)
++ int getChessIdx()
++ int getColumn()
++ int getRow()
+}
+class network.message.BoardInfo {
+- int[][] size
+- TeamColor[][] teamColor
++ <<Create>> BoardInfo(Board)
++ int[][] getSize()
++ void setSize(int[][])
++ TeamColor[][] getTeamColor()
++ void setTeamColor(TeamColor[][])
+}
+class network.message.MessageObject {
+~ MessageType type
++ <<Create>> MessageObject(MessageType)
+}
+class network.client.Client {
+- Socket clientSocket
+- ObjectOutputStream out
+- ObjectInputStream in
++ void connect(String,int)
++ void send(MessageObject)
++ MessageObject receive()
++ void disconnect()
+}
+class network.server.Server {
+- ServerSocket serverSocket
++ ObjectOutputStream out
++ ObjectInputStream in
++ void start(TeamColor,String)
+- void handleClient(Socket)
++ void stop()
++ SocketAddress getAddress()
++ void sendMessageToClient(ObjectOutputStream,MessageObject)
+}
+enum network.message.Chess {
++  Large
++  Medium
++  Small
+}
+class network.message.PlayerInfo {
+- TeamColor teamColor
+- String name
+- ArrayList<Chess> inventory
++ <<Create>> PlayerInfo(TeamColor,String,ArrayList<BaseChess>)
++ <<Create>> PlayerInfo(Player)
+- ArrayList<Chess> toChessMessage(ArrayList<BaseChess>)
++ ArrayList<Chess> getInventory()
++ void setInventory(ArrayList<Chess>)
++ TeamColor getTeamColor()
++ void setTeamColor(TeamColor)
++ String getName()
++ void setName(String)
+}
+enum network.message.MessageType {
++  CONNECT
++  ACTION
++  GAME_RESULT
++  ROOM_INFO
++  GAME_REMAINING
+}
+class network.message.GameResult {
++ <<Create>> GameResult()
+}
+class network.message.RoomInfo {
+- PlayerInfo playerInfo1
+- PlayerInfo playerInfo2
+- PlayerInfo currentPlayer
+- BoardInfo boardInfo
++ <<Create>> RoomInfo(GameLogic)
++ BoardInfo getBoardInfo()
++ void setBoardInfo(Board)
++ PlayerInfo getPlayerInfo1()
++ void setPlayerInfo1(PlayerInfo)
++ PlayerInfo getPlayerInfo2()
++ void setPlayerInfo2(PlayerInfo)
++ PlayerInfo getCurrentPlayer()
++ void setCurrentPlayer(PlayerInfo)
++ String toString()
+}
+
+
+network.message.MessageObject <|-- network.message.Connect
+network.message.MessageObject <|-- network.message.Play
+java.io.Serializable <|.. network.message.BoardInfo
+java.io.Serializable <|.. network.message.MessageObject
+java.io.Serializable <|.. network.message.PlayerInfo
+network.message.MessageObject <|-- network.message.GameResult
+network.message.MessageObject <|-- network.message.RoomInfo
+@enduml
