@@ -8,7 +8,7 @@ import ui.components.SVGViewBase;
 public class PopTransitionController {
 
     private final ScaleTransition scaleTransition;
-//    private AudioClip clickSound;
+    private AudioClip clickSound;
     public PopTransitionController(SVGViewBase n) {
         scaleTransition = new ScaleTransition();
         scaleTransition.setNode(n);
@@ -20,14 +20,14 @@ public class PopTransitionController {
 
         scaleTransition.setFromY(1.2);
         scaleTransition.setToY(1);
-//        clickSound = new AudioClip(ClassLoader.getSystemResource("audio/ClickButton.mp3").toString());
+        clickSound = new AudioClip(ClassLoader.getSystemResource("assets/audio/ClickButton.mp3").toString());
     }
 
     public void playAnimation(){
         this.scaleTransition.playFromStart();
     }
 
-//    public void playSound(){
-//        this.clickSound.play();
-//    }
+    public void playSound(){
+        this.clickSound.play();
+    }
 }

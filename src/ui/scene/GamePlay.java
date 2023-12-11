@@ -304,6 +304,7 @@ public class GamePlay extends HBox {
             );
         }
         n.setOnMouseClicked(event -> {
+            controller.playSound();
             controller.playAnimation();
             if(this.chessIdx != -1){
                 if(mode == GameMode.OFFLINE){
@@ -344,6 +345,7 @@ public class GamePlay extends HBox {
         }
         n.setOnMouseClicked(event -> {
             controller.playAnimation();
+            controller.playSound();
             this.chessIdx = i;
             updateLayout();
         });
