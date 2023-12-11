@@ -69,4 +69,46 @@ public class GameLogic {
     public Player getPlayer1() {return player1;}
     public void setPlayer2(Player player2) {this.player2 = player2;}
     public Player getPlayer2() {return player2;}
+
+    public boolean[][] getWinPattern(){
+        boolean[][] pattern = new boolean[3][3];
+        Board gameBoard = getBoard();
+        if (gameBoard.checkRows()){
+            for (int row=0;row<3;row++){
+                if (gameBoard.checkThreeCells(row,0,row,1,row,2)){
+                    pattern[row][0] = true;
+                    pattern[row][1] = true;
+                    pattern[row][2] = true;
+                    break;
+                }
+            }
+            return pattern;
+        }
+        if (gameBoard.checkColumns()){
+            for (int column = 0; column < 3; column++) {
+                if (gameBoard.checkThreeCells(0,column,1,column,2,column)){
+                    pattern[0][column] = true;
+                    pattern[1][column] = true;
+                    pattern[2][column] = true;
+                    break;
+                }
+            }
+            return pattern;
+        }
+        if (gameBoard.checkDiagonals()){
+            if (gameBoard.checkThreeCells(0,0,1,1,2,2)){
+                pattern[0][0] = true;
+                pattern[1][1] = true;
+                pattern[2][2] = true;
+                return pattern;
+            }
+            if (gameBoard.checkThreeCells(0,2,1,1,2,0)){
+                pattern[0][2] = true;
+                pattern[1][1] = true;
+                pattern[2][0] = true;
+                return pattern;
+            }
+        }
+        return pattern;
+    }
 }

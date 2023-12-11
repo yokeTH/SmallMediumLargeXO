@@ -65,6 +65,11 @@ public class Main{
 
                 if (gameInstance.getWinner() != null){
                     System.out.println(gameInstance.getWinner().getName()+" (Player"+playerNum+")"+" wins.");
+                    System.out.println("print winning pattern");
+                    boolean[][] bool = gameInstance.getWinPattern();
+                    for (int i=0;i<3;i++){
+                        System.out.println(bool[i][0]+" "+bool[i][1]+" "+bool[i][2]);
+                    }
                 } else {
                     System.out.println("It's a draw.");
                 }
