@@ -8,6 +8,8 @@ import ui.Main;
 import ui.components.Logo;
 import ui.components.TextButton;
 
+import java.io.IOException;
+
 public class Menu extends VBox {
 
     private static Scene sceneInstance;

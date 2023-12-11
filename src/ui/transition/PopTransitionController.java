@@ -1,13 +1,20 @@
 package ui.transition;
 
 import javafx.animation.ScaleTransition;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import ui.components.SVGViewBase;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 public class PopTransitionController {
 
     private final ScaleTransition scaleTransition;
-    public PopTransitionController(SVGViewBase n){
+    private Media clickSound;
+    public PopTransitionController(SVGViewBase n) {
         scaleTransition = new ScaleTransition();
         scaleTransition.setNode(n);
         scaleTransition.setCycleCount(1);
@@ -18,9 +25,19 @@ public class PopTransitionController {
 
         scaleTransition.setFromY(1.2);
         scaleTransition.setToY(1);
+//        try{
+//            clickSound = new Media(ClassLoader.getSystemResources("assets/audio/ClickButton.mp3").toString());
+//        }catch (Exception e){
+//            System.out.println("Can't load sound");
+//            e.printStackTrace();
+//        }
     }
 
-    public void play(){
+    public void playAnimation(){
         this.scaleTransition.playFromStart();
+    }
+
+    public void playSound(){
+//        new MediaPlayer(this.clickSound).play();
     }
 }
