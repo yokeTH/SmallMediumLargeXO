@@ -19,10 +19,7 @@ public class LargeChess extends BaseChess{
         BaseChess chessInPos = boardList[row][column];
         if (chessInPos== null) {
             return true; //empty place
-        } else if (chessInPos.getSize()<=2 && chessInPos.getTeamColor()!=this.getTeamColor()) {
-            return true; // if size <= 2 and different teamColor
-        }
-        return false;
+        } else return chessInPos.getSize() <= 2 && chessInPos.getTeamColor() != this.getTeamColor(); // if size <= 2 and different teamColor
     }
 
     @Override
