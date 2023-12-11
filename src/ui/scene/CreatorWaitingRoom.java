@@ -5,6 +5,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import logic.entity.Player;
+import logic.game.GameLogic;
 import logic.game.TeamColor;
 import network.server.Server;
 import ui.components.LargeOChess;
@@ -19,6 +21,7 @@ public class CreatorWaitingRoom extends GridPane {
     private static Scene sceneInstance;
     public static Server server;
     CreatorWaitingRoom(String playerName, TeamColor teamColor) throws UnknownHostException {
+        GameLogic.getInstance().setPlayer1(new Player(teamColor, playerName));
         server = new Server();
 //        server.start(teamColor, playerName);
         new Thread(()->server.start(teamColor, playerName)).start();
