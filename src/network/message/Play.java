@@ -6,6 +6,9 @@ public class Play extends MessageObject{
 
     public Play(int chessIdx,int column,int row) {
         super(MessageType.ACTION);
+        this.chessIdx = chessIdx;
+        this.column = column;
+        this.row = row;
     }
 
     public int getChessIdx() {

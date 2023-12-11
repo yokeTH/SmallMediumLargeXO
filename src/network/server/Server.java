@@ -1,8 +1,13 @@
 package network.server;
 
+import javafx.application.Platform;
 import logic.entity.Player;
+import logic.game.GameLogic;
 import logic.game.TeamColor;
 import network.message.*;
+import ui.Main;
+import ui.scene.GamePlayOnline;
+import ui.scene.RoomRole;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -11,54 +16,65 @@ import java.net.SocketAddress;
 
 public class Server {
     private ServerSocket serverSocket;
-    private Room room;
-    private RoomInfo roomInfo;
-
+    public ObjectOutputStream out;
+    public ObjectInputStream in;
     public void start(TeamColor teamColor, String name) {
         try {
-            this.room = new Room();
-            room.setPlayer1(new Player(teamColor, name));
-            serverSocket = new ServerSocket(65301);
 
+            // Set P1
+            GameLogic.getInstance().setPlayer1(new Player(teamColor, name));
+
+            // Start Socket
+            serverSocket = new ServerSocket(65301);
             System.out.println("Server started at " + serverSocket.getLocalSocketAddress());
 
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("Client connected: " + clientSocket.getRemoteSocketAddress());
-                new Thread(() -> handleClient(clientSocket)).start();
+            // Client connect
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("Client connected: " + clientSocket.getRemoteSocketAddress());
+            out = new ObjectOutputStream(clientSocket.getOutputStream());
+            in = new ObjectInputStream(clientSocket.getInputStream());
+            new Thread(() -> handleClient(clientSocket)).start();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void handleClient(Socket clientSocket) {
-        try (
-                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream())
-        ) {
+        try{
             MessageObject msg;
             while ((msg = (MessageObject) in.readObject()) != null) {
                 if (msg instanceof Connect) {
-                    if (room.getPlayer1().getTeamColor() == TeamColor.BLACK){
-                        room.setPlayer2(new Player(TeamColor.WHITE, ((Connect) msg).getName()));
+
+                    // On Connect assign Color for player2
+                    if (GameLogic.getInstance().getPlayer1().getTeamColor() == TeamColor.BLACK){
+                        GameLogic.getInstance().setPlayer2(new Player(TeamColor.WHITE, ((Connect) msg).getName()));
                     }else {
-                        room.setPlayer2(new Player(TeamColor.BLACK, ((Connect) msg).getName()));
+                        GameLogic.getInstance().setPlayer2(new Player(TeamColor.BLACK, ((Connect) msg).getName()));
                     }
 
+                    // Random Who go first
                     double rng = Math.random();
                     if(rng > 0.5){
-                        room.getGameInstance().setCurrentPlayer(room.getPlayer1());
-
+                        GameLogic.getInstance().setCurrentPlayer(GameLogic.getInstance().getPlayer1());
                     }else {
-                        room.getGameInstance().setCurrentPlayer(room.getPlayer2());
+                        GameLogic.getInstance().setCurrentPlayer(GameLogic.getInstance().getPlayer2());
                     }
-                    this.roomInfo = new RoomInfo(this.room);
-                    this.roomInfo.setCurrentPlayer(new PlayerInfo(room.getGameInstance().getCurrentPlayer()));
-                    this.sendMessageToClient(out, this.roomInfo);
+
+                    Platform.runLater(() ->{
+                        Main.stage.setScene(GamePlayOnline.getSceneInstance(RoomRole.CREATOR, GameLogic.getInstance().getPlayer1().getTeamColor(), GameLogic.getInstance().getPlayer1().getName()));
+                    });
+                    // Sent Data to Client
+                    this.sendMessageToClient(out, new RoomInfo(GameLogic.getInstance()));
 
                 }else if(msg instanceof Play){
-                    this.room.getGameInstance().getCurrentPlayer().play(((Play) msg).getChessIdx(), ((Play) msg).getColumn(), ((Play) msg).getRow());
-                    this.roomInfo.setCurrentPlayer(new PlayerInfo(room.getGameInstance().getCurrentPlayer()));
-                    this.sendMessageToClient(out, this.roomInfo);
+                    GameLogic.getInstance().getCurrentPlayer().play(((Play) msg).getChessIdx(), ((Play) msg).getColumn(), ((Play) msg).getRow());
+                    System.out.println(GameLogic.getInstance().getPlayer2().getBaseChessArrayList());
+                    if(GameLogic.getInstance().getCurrentPlayer().isPlayDone()){
+                        GameLogic.getInstance().goToNextPlayer();
+                    }
+                    GamePlayOnline.updateLayout();
+                    this.sendMessageToClient(out, new RoomInfo(GameLogic.getInstance()));
                 }
 
 
@@ -66,6 +82,7 @@ public class Server {
         } catch (EOFException e) {
 
             System.out.println("Client Disconnect: " + clientSocket.getRemoteSocketAddress());
+            System.exit(9999);
 
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
@@ -95,8 +112,8 @@ public class Server {
         return null;
     }
 
-    // Add a method for sending messages to the client
-    private void sendMessageToClient(ObjectOutputStream out, MessageObject message) throws IOException {
+    public void sendMessageToClient(ObjectOutputStream out, MessageObject message) throws IOException {
+        System.out.println("SENT");
         out.writeObject(message);
         out.flush();
     }
