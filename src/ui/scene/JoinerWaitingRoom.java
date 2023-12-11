@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import logic.entity.Player;
 import logic.game.GameLogic;
 import logic.game.TeamColor;
 import network.client.Client;
@@ -28,15 +29,14 @@ public class JoinerWaitingRoom extends GridPane {
         client.connect(address, 65301);
         client.send(new Connect(playerName));
         RoomInfo initInfo = (RoomInfo) client.receive();
-        GamePlayOnline.updateGameInstance(initInfo);
-        Platform.runLater(() -> Main.stage.setScene(GamePlayOnline.getSceneInstance(RoomRole.JOINER, initInfo.getPlayerInfo2().getTeamColor(), playerName)));
+        GamePlay.getInstance(RoomRole.JOINER, new Player(initInfo.getPlayerInfo1().getTeamColor(), initInfo.getPlayerInfo1().getName()), new Player(initInfo.getPlayerInfo2().getTeamColor(), initInfo.getPlayerInfo2().getName())).updateClientGameInstance(initInfo);
+        Platform.runLater(() -> Main.stage.setScene(GamePlay.getSceneInstance()));
         new Thread(()->{
             MessageObject msg;
             try {
                 while ((msg = (MessageObject) client.receive()) != null){
                         if (msg instanceof RoomInfo){
-                            GamePlayOnline.updateGameInstance((RoomInfo) msg);
-                            GamePlayOnline.updateLayout();
+                            GamePlay.getInstance().updateClientGameInstance((RoomInfo) msg);
                         }
                     System.out.println("RECEIVE");
                     }
