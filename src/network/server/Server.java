@@ -6,7 +6,7 @@ import logic.game.GameLogic;
 import logic.game.TeamColor;
 import network.message.*;
 import ui.Main;
-import ui.scene.GamePlayOnline;
+import ui.scene.GamePlay;
 import ui.scene.RoomRole;
 
 import java.io.*;
@@ -62,18 +62,22 @@ public class Server {
                     }
 
                     Platform.runLater(() ->{
-                        Main.stage.setScene(GamePlayOnline.getSceneInstance(RoomRole.CREATOR, GameLogic.getInstance().getPlayer1().getTeamColor(), GameLogic.getInstance().getPlayer1().getName()));
+                        Main.stage.setScene(GamePlay.getSceneInstance(RoomRole.CREATOR, GameLogic.getInstance().getPlayer1(), GameLogic.getInstance().getPlayer2()));
+                        System.out.println("RUN LATER");
+                        GamePlay.getInstance(RoomRole.CREATOR, GameLogic.getInstance().getPlayer1(), GameLogic.getInstance().getPlayer2()).updateLayout();
                     });
+
                     // Sent Data to Client
                     this.sendMessageToClient(out, new RoomInfo(GameLogic.getInstance()));
 
                 }else if(msg instanceof Play){
                     GameLogic.getInstance().getCurrentPlayer().play(((Play) msg).getChessIdx(), ((Play) msg).getColumn(), ((Play) msg).getRow());
-                    System.out.println(GameLogic.getInstance().getPlayer2().getBaseChessArrayList());
-                    if(GameLogic.getInstance().getCurrentPlayer().isPlayDone()){
+                    if(GameLogic.getInstance().getCurrentPlayer().isPlayDone() && !GameLogic.getInstance().isGameOver()) {
+                        GameLogic.getInstance().getCurrentPlayer().setPlayDone(false);
                         GameLogic.getInstance().goToNextPlayer();
                     }
-                    GamePlayOnline.updateLayout();
+
+                    GamePlay.getInstance().updateLayout();
                     this.sendMessageToClient(out, new RoomInfo(GameLogic.getInstance()));
                 }
 
