@@ -51,5 +51,9 @@ public class SmallOChess extends SVGViewBase {
         super();
     }
 
+    public SmallOChess(double v, double v1, double v2) {
+        super(v, v1, v2);
+    }
+
 
 }

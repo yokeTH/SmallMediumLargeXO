@@ -67,6 +67,10 @@ public class MediumXChess extends SVGViewBase implements SetPrimaryColorAble, Se
         super(w, h);
     }
 
+    public MediumXChess(double v, double v1, double v2) {
+        super(v, v1, v2);
+    }
+
     public MediumXChess(double v){
         super(v);
     }

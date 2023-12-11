@@ -1,13 +1,19 @@
 package ui.scene;
 
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import ui.Main;
+import ui.components.Logo;
 import ui.components.TextButton;
 
-public class Menu extends GridPane {
+public class Menu extends VBox {
 
+    private static Scene sceneInstance;
     public Menu() {
+
+        Logo logo = new Logo();
 
         TextButton playOfflineButton = new TextButton("PLAY OFFLINE");
         playOfflineButton.setOnMouseClicked(event->{
@@ -25,22 +31,21 @@ public class Menu extends GridPane {
             Main.stage.setScene(JoinRoom.getSceneInstance());
         });
 
-        TextButton helpButton = new TextButton("HELP");
-        TextButton credits = new TextButton("CREDITS");
-
         TextButton quitButton = new TextButton("QUIT");
         quitButton.setOnMouseClicked(mouse->{
             Main.stage.close();
         });
 
 
-        this.setVgap(10);
+        this.setSpacing(10);
         this.setAlignment(Pos.CENTER);
-        this.add(playOfflineButton,0,1);
-        this.add(createRoomButton,0,2);
-        this.add(joinRoomButton,0,3);
-        this.add(helpButton,0,4);
-        this.add(credits,0,5);
-        this.add(quitButton,0,6);
+        this.getChildren().addAll(logo, playOfflineButton, createRoomButton, joinRoomButton, quitButton);
+    }
+
+    public static Scene getSceneInstance(){
+        if(sceneInstance == null){
+            sceneInstance = new Scene(new Menu(), 854, 480);
+        }
+        return sceneInstance;
     }
 }

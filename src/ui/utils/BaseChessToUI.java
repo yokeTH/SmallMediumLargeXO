@@ -12,21 +12,21 @@ public class BaseChessToUI {
                 return new EmptyChess();
             } else if(baseChess instanceof LargeChess){
                 if(baseChess.getTeamColor() == TeamColor.BLACK){
-                    return new LargeXChess(120);
+                    return new LargeXChess(120.0, 120.0, 120.0);
                 }else{
-                    return new LargeOChess(120);
+                    return new LargeOChess(120.0, 120.0, 120.0);
                 }
             } else if (baseChess instanceof MediumChess) {
                 if(baseChess.getTeamColor() == TeamColor.BLACK){
-                    return new MediumXChess(120);
+                    return new MediumXChess(90, 120.0, 120.0);
                 }else{
-                    return new MediumOChess(120);
+                    return new MediumOChess(90, 120.0, 120.0);
                 }
             }else{
                 if(baseChess.getTeamColor() == TeamColor.BLACK){
-                    return new SmallXChess(120);
+                    return new SmallXChess(60, 120.0, 120.0);
                 }else{
-                    return new SmallOChess(120);
+                    return new SmallOChess(60, 120.0, 120.0);
                 }
         }
     }
