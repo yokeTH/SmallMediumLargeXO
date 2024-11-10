@@ -30,15 +30,19 @@ public class Client {
         try {
             if (out != null) {
                 out.close();
+                out = null;
             }
             if (in != null) {
                 in.close();
+                in = null;
             }
             if (clientSocket != null && !clientSocket.isClosed()) {
                 clientSocket.close();
+                clientSocket = null;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }

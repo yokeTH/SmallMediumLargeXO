@@ -10,27 +10,54 @@ import ui.scene.GamePlay;
 import ui.scene.RoomRole;
 
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketAddress;
+import java.net.*;
+import java.util.Enumeration;
 
 public class Server {
     private ServerSocket serverSocket;
     public ObjectOutputStream out;
     public ObjectInputStream in;
+    private Socket clientSocket;
+    private Thread clientHandlerThread;
+
+
+    public String getLocalIPAddress() {
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface iface = interfaces.nextElement();
+                if (iface.isLoopback() || !iface.isUp()) {
+                    continue;
+                }
+
+                Enumeration<InetAddress> addresses = iface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress addr = addresses.nextElement();
+                    // We're only interested in IPv4 addresses
+                    if (addr.getHostAddress().contains(".")) {
+                        return addr.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return "127.0.0.1"; // Fallback to localhost if no other address found
+    }
+
     public void start(TeamColor teamColor, String name) {
         try {
-
             // Set P1
             GameLogic.getInstance().setPlayer1(new Player(teamColor, name));
 
             // Start Socket
             serverSocket = new ServerSocket(65301);
-            System.out.println("Server started at " + serverSocket.getLocalSocketAddress());
+            String localIP = getLocalIPAddress();
+            System.out.println("Server started at " + localIP + ":" + serverSocket.getLocalPort());
 
             // Client connect
             Socket clientSocket = serverSocket.accept();
-            System.out.println("Client connected: " + clientSocket.getRemoteSocketAddress());
+            System.out.println("Client connected from: " + clientSocket.getRemoteSocketAddress());
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new ObjectInputStream(clientSocket.getInputStream());
             new Thread(() -> handleClient(clientSocket)).start();
@@ -39,6 +66,7 @@ public class Server {
             e.printStackTrace();
         }
     }
+
 
     private void handleClient(Socket clientSocket) {
         try{
@@ -121,5 +149,48 @@ public class Server {
         out.writeObject(message);
         out.flush();
     }
+
+    private void cleanup() {
+        try {
+            // 1. Close input stream if it exists
+            if (in != null) {
+                in.close();
+                in = null;
+            }
+
+            // 2. Close output stream if it exists
+            if (out != null) {
+                out.close();
+                out = null;
+            }
+
+            // 3. Close client socket if it exists and is still open
+            if (clientSocket != null && !clientSocket.isClosed()) {
+                clientSocket.close();
+                clientSocket = null;
+            }
+
+            // 4. Close server socket if it exists and is still open
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+                serverSocket = null;
+            }
+
+            // 5. Handle client handler thread cleanup
+            if (clientHandlerThread != null) {
+                clientHandlerThread.interrupt(); // Signal thread to stop
+                try {
+                    // Wait up to 1 second for thread to finish
+                    clientHandlerThread.join(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                clientHandlerThread = null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

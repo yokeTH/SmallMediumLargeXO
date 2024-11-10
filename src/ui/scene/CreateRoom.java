@@ -13,13 +13,14 @@ import logic.game.TeamColor;
 import ui.Main;
 import ui.components.LargeOChess;
 import ui.components.LargeXChess;
+import ui.components.TextButton;
 
 import java.net.UnknownHostException;
 
 public class CreateRoom extends GridPane {
-
     private static Scene sceneInstance;
-    public CreateRoom(){
+
+    public CreateRoom() {
         Text title = new Text("CREATE ROOM");
         title.setFont(Font.font("Itim",48));
         title.setTextAlignment(TextAlignment.CENTER);
@@ -28,13 +29,11 @@ public class CreateRoom extends GridPane {
         roomNameLabel.setFont(Font.font("Itim",24));
         Label playerNameLabel = new Label("Player Name");
         playerNameLabel.setFont(Font.font("Itim",24));
-        Label selectLable = new Label("select");
-        selectLable.setFont(Font.font("Itim",24));
+        Label selectLabel = new Label("Select");
+        selectLabel.setFont(Font.font("Itim",24));
 
         TextField roomNameField = new TextField();
         TextField playerNameField = new TextField();
-
-//        TeamColor teamColor = TeamColor.BLACK;
 
         LargeXChess x = new LargeXChess(72);
         x.setOnMouseClicked(event -> {
@@ -44,8 +43,7 @@ public class CreateRoom extends GridPane {
                 throw new RuntimeException(e);
             }
         });
-//        Pane xBg = new Pane(x);
-//        xBg.setBackground(Background.fill(Color.WHITE));
+
         LargeOChess o = new LargeOChess(72);
         o.setOnMouseClicked(event -> {
             try {
@@ -56,29 +54,34 @@ public class CreateRoom extends GridPane {
         });
 
         HBox xo = new HBox(x, o);
-//        TextButton createButton = new TextButton("CREATE", 480);
-//        createButton.setOnMouseClicked(event -> {
-//            WaitingRoom.getSceneInstance(RoomRole.CREATOR, roomNameField.getText(), teamColor);
-//        });
+
+        // Add back button
+        TextButton backButton = new TextButton("BACK", 150);
+        backButton.setOnMouseClicked(event -> {
+            clearScene();
+            Main.stage.setScene(Menu.getSceneInstance());
+        });
 
         this.setVgap(10);
         this.setHgap(10);
         this.setAlignment(Pos.TOP_CENTER);
 
-        this.add(title, 0,0,2,1);
-        this.add(roomNameLabel, 0,1);
-        this.add(playerNameLabel, 0,2);
-        this.add(selectLable, 0,3);
-//        this.add(createButton, 0, 4, 2,1);
-
-        this.add(roomNameField, 1,1);
-        this.add(playerNameField, 1 ,2);
+        this.add(title, 0, 0, 2, 1);
+        this.add(roomNameLabel, 0, 1);
+        this.add(playerNameLabel, 0, 2);
+        this.add(selectLabel, 0, 3);
+        this.add(roomNameField, 1, 1);
+        this.add(playerNameField, 1, 2);
         this.add(xo, 1, 3);
+        this.add(backButton, 0, 4, 2, 1);
     }
 
+    private void clearScene() {
+        sceneInstance = null;
+    }
 
-    public static Scene getSceneInstance(){
-        if(CreateRoom.sceneInstance == null){
+    public static Scene getSceneInstance() {
+        if(CreateRoom.sceneInstance == null) {
             CreateRoom.sceneInstance = new Scene(new CreateRoom(), 854, 480);
         }
         return CreateRoom.sceneInstance;
